@@ -1,8 +1,6 @@
 # docker-hpa-example
 
-Docker image for starting a simple web server in Go to test Kubernetes Horizontal Pod Autoscaler. Mainly used for testing vendor solutions that cannot access ```gcr.io/google_containers/hpa-example``` (eg. Aliyun, Tencent Cloud).
+This example is based on horizontal pod autoscale example. https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
 
-* Source Image:
-  * ```golang:1.10-alpine``` (https://hub.docker.com/_/golang/)
+Compared to the original example, this one is based on golang and it is using an unprivileged port 1025 to be compliant with pod security policies.
 
-Docker Hub: [docker-hpa-example](https://hub.docker.com/r/chiahan1123/docker-hpa-example/)
