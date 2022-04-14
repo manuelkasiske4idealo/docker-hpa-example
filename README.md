@@ -1,4 +1,4 @@
-# docker-hpa-example
+# HorizontalPodAutoscaler Walkthrough
 
 This example is based on horizontal pod autoscale example. https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
 
