@@ -9,17 +9,17 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: php-apache-deployment
+  name: webserver-deployment
   namespace: hpa-example
 spec:
   selector:
     matchLabels:
-      run: php-apache
+      run: webserver
   replicas: 1
   template:
     metadata:
       labels:
-        run: php-apache
+        run: webserver
     spec:
       securityContext:
         runAsUser: 1000
@@ -28,7 +28,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-      - name: php-apache
+      - name: webserver
         volumeMounts:
         - mountPath: /tmp/
           name: tmp
@@ -62,30 +62,30 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: php-apache-service
+  name: webserver-service
   namespace: hpa-example
   labels:
-    run: php-apache
+    run: webserver
 spec:
   ports:
   - port: 80
     targetPort: 1025
   selector:
-    run: php-apache
+    run: webserver
 ---
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: php-apache-hpa
+  name: webserver-hpa
   namespace: hpa-example
   labels:
-    app.kubernetes.io/name: php-apache
-    app.kubernetes.io/instance: php-apache
+    app.kubernetes.io/name: webserver
+    app.kubernetes.io/instance: webserver
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: php-apache-deployment
+    name: webserver-deployment
   minReplicas: 1
   maxReplicas: 100
   metrics:
