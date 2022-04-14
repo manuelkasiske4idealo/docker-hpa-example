@@ -1,5 +1,7 @@
+REGISTRY?=manuelkasiske
+IMAGE?=$(REGISTRY)/docker-hpa-example
 build:
-	docker build -t manuelkasiske/docker-hpa-example .
+	docker build -t $(IMAGE) .
 push:
-	docker push manuelkasiske/docker-hpa-example
+	docker push $(IMAGE)
 all: build push
