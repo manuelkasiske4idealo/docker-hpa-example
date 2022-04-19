@@ -47,7 +47,7 @@ spec:
              - NET_BIND_SERVICE
         image: manuelkasiske/docker-hpa-example
         ports:
-          - containerPort: 80
+          - containerPort: 1025
         resources:
           limits:
             cpu: 500m
@@ -107,6 +107,7 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     # creates only HTTPS listener
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ip-address-type: dualstack
     # ####### change the hostname #######
     external-dns.alpha.kubernetes.io/hostname: webserver.eks-sandbox.aws.idealo.cloud
 spec:
@@ -131,6 +132,7 @@ metadata:
   labels:
     run: webserver
   name: allow-all
+  namespace: hpa-example
 spec:
   egress:
   - {}
