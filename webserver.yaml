@@ -70,6 +70,7 @@ spec:
   ports:
   - port: 80
     targetPort: 1025
+  type: NodePort
   selector:
     run: webserver
 ---
@@ -94,3 +95,48 @@ spec:
         name: cpu
         targetAverageUtilization: 20
 ---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  # ####### change the namespace #######
+  namespace: hpa-example
+  name: webserver-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    # creates only HTTPS listener
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+    # ####### change the hostname #######
+    external-dns.alpha.kubernetes.io/hostname: webserver.eks-sandbox.aws.idealo.cloud
+spec:
+  rules:
+    # You need the host part to have cert auto-discovery in place
+    # ####### change the hostname #######
+    - host: webserver.eks-sandbox.aws.idealo.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: webserver-service
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  annotations:
+  labels:
+    run: webserver
+  name: allow-all
+spec:
+  egress:
+  - {}
+  ingress:
+  - {}
+  podSelector: {}
+  policyTypes:
+  - Egress
+  - Ingress
